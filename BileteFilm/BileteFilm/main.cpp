@@ -7,7 +7,8 @@ using namespace std;
 
 int main()
 {
-    menu();
+    Meniu initializareMeniu;
+    initializareMeniu.gestionareMeniu();
 
     return 0;
 }
