@@ -1,2 +1,3 @@
 ﻿  main.cpp
-  BileteFilm.vcxproj -> D:\Proiect\BileteFilm\Debug\BileteFilm.exe
+D:\Facultate\AN 2\3. Programare Orientata Obiect\4. Proiect\BileteFilm-main\BileteFilm\BileteFilm\film.h(141,45): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+  BileteFilm.vcxproj -> D:\Facultate\AN 2\3. Programare Orientata Obiect\4. Proiect\BileteFilm-main\BileteFilm\Debug\BileteFilm.exe
