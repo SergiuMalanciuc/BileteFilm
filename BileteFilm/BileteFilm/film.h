@@ -132,6 +132,11 @@ public:
 		this->pret++;
 	}
 
+	Film operator+ () {
+		Film copy = *this;
+		copy.pret += pret;
+		return copy;
+	}
 	
 	bool operator!()
 	{
@@ -146,11 +151,12 @@ public:
 		}
 		else
 		{
-			throw exception("index invalid!");
+			throw exception("Index invalid!");
 		}
 	}
 
 	
+
 
 	string setNume(string nume) {
 		this->nume = nume;
@@ -173,57 +179,55 @@ public:
 		return this->gen;
 	}
 
-	int setPret(int pret) {
-		this->pret = pret;
-		return this->pret;
-	}
-
-	int getPret() {
-		cout << "Pretul unui bilet la acest film este " << pret;
-		return pret;
-	}
 
 
-	void scriere() {
+
+	void scriereFilm() {
 		ofstream f("filme.bin", ios::binary);
 
 		int lungimeNume = nume.length() + 1;
 		f.write((char*)&lungimeNume, sizeof(lungimeNume));
 		f.write(nume.c_str(), lungimeNume);
+		//nume -> string
 
 		int lungimeGen = gen.length() + 1;
 		f.write((char*)&lungimeGen, sizeof(lungimeGen));
 		f.write(gen.c_str(), lungimeGen);
-
-		//f.write(sala, (long long)strlen(sala) + 1);
+		//gen -> string
 
 		f.write((char*)&nrDerulari, sizeof(nrDerulari));
+		//nrDerulari -> int
 
 		for (int i = 0; i < nrDerulari; i++) {
 			f.write((char*)&ora[i], sizeof(ora[i]));
 		}
+		//ora -> int*
+
 		f.close();
 		
 	}
 
-	void citire() {
+	void citireFilm() {
 		ifstream f("filme.bin", ios::binary);
 		
-		int length = 0;
-		f.read((char*)&length, sizeof(length));
-		char* aux = new char[length];
-		f.read(aux, length);
+		int lengthNume = 0;
+		f.read((char*)&lengthNume, sizeof(lengthNume));
+		char* aux = new char[lengthNume];
+		f.read(aux, lengthNume);
 		nume = aux;
 
 		cout << "Numele filmului stocat in fisier este: " << nume << endl;
-		
-		char* aux2 = new char[length];
-		f.read(aux2, length);
+		//OK
+
+		int lengthGen = 0;
+		f.read((char*)&lengthGen, sizeof(lengthGen));
+		char* aux2 = new char[lengthGen];
+		f.read(aux2, lengthGen);
 		gen = aux2;
 
 		cout << "Genul filmului stocat in fisier este " << gen << endl;
 
-		string buffer = "";
+		/*string buffer = "";
 		char c = 0;
 		while ((c = f.get()) != 0) {
 			buffer += c;
@@ -232,7 +236,10 @@ public:
 		sala = new char[buffer.length() + 1];
 		strcpy_s(sala, buffer.length() + 1, buffer.c_str());
 
-		cout << "Sala filmului stocata in fisier este " << sala << endl;
+		cout << "Sala filmului stocata in fisier este " << sala << endl;*/
+
+
+
 
 		f.read((char*)&nrDerulari, sizeof(nrDerulari));
 		delete[] ora;
@@ -241,20 +248,16 @@ public:
 			f.read((char*)&ora[i], sizeof(ora[i]));
 		}
 
-		cout << "Numarul de redari zilnice: " << nrDerulari << " la orele: " << ora << endl;
-		f.close();
-	}
-	
-	void scrieretext() {
-		ofstream f("filme.txt");
-		cout << "Fisierul s-a creat cu succes" << endl;
-		f << nume;
-		f << sala;
-		f << gen;
-		f << ora;
+		cout << "Numarul de redari zilnice: " << nrDerulari << endl;
+		cout << "Orele de difuzare: " << endl;
+		for (int i = 0; i < nrDerulari; i++) {
+			cout<< "Orele disponibile sunt: " << ora[i] << endl;
+		}
 
 		f.close();
 	}
+	
+
 	
 
 
