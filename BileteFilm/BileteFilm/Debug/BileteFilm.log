@@ -1,4 +1,4 @@
 ﻿  main.cpp
 D:\Proiect\BileteFilm\BileteFilm\film.h(146,45): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
-D:\Proiect\BileteFilm\BileteFilm\Bilet.h(158,45): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+D:\Proiect\BileteFilm\BileteFilm\Bilet.h(144,45): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
   BileteFilm.vcxproj -> D:\Proiect\BileteFilm\Debug\BileteFilm.exe

@@ -10,7 +10,7 @@ private:
 	int* locuri;
 	int nrLocuri;
 	char* sala;
-	char* numeClient;
+	string numeClient;
 	int pret;
 	static string welcome;
 
@@ -22,9 +22,11 @@ public:
 		locuri = nullptr;
 		nrLocuri = 0;
 		sala = nullptr;
+		numeClient = " ";
+		pret = 0;
 	}
 
-	Bilet(int ID, string numeFilm, int* locuri, int nrLocuri, const char* sala, const char* numeClient, int pret) : ID(ID) {
+	Bilet(int ID, string numeFilm, int* locuri, int nrLocuri, const char* sala, string numeClient, int pret) : ID(ID) {
 		this->numeFilm = numeFilm;
 
 		if (locuri != nullptr && nrLocuri != 0) {
@@ -49,14 +51,7 @@ public:
 			this->sala = nullptr;
 		}
 
-		if (numeClient != nullptr) {
-			int length = strlen(numeClient) + 1;
-			this->numeClient = new char[length];
-			strcpy_s(this->numeClient, length, numeClient);
-		}
-		else {
-			this->numeClient = nullptr;
-		}
+		this->numeClient = numeClient;
 		this->pret = pret;
 	}
 
@@ -84,14 +79,7 @@ public:
 			sala = nullptr;
 		}
 
-		if (s.numeClient != nullptr) {
-			int length = strlen(s.numeClient) + 1;
-			numeClient = new char[length];
-			strcpy_s(numeClient, length, s.numeClient);
-		}
-		else {
-			numeClient = nullptr;
-		}
+		numeClient = s.numeClient;
 
 		pret = s.pret;
 	}
@@ -105,9 +93,7 @@ public:
 			delete[] sala;
 		}
 
-		if (numeClient != nullptr) {
-			delete[] numeClient;
-		}
+		
 	}
 
 
@@ -135,14 +121,7 @@ public:
 			sala = nullptr;
 		}
 
-		if (s.numeClient != nullptr) {
-			int length = strlen(s.numeClient) + 1;
-			numeClient = new char[length];
-			strcpy_s(numeClient, length, s.numeClient);
-		}
-		else {
-			numeClient = nullptr;
-		}
+		numeClient = s.numeClient;
 
 		pret = s.pret;
 	}
@@ -151,9 +130,16 @@ public:
 		this->pret++;
 	}
 
+	Bilet operator+ () {
+		Bilet copy = *this;
+		copy.pret += pret;
+		return copy;
+	}
+
 	bool operator! () {
 		return nrLocuri > 0;
 	}
+	
 
 	int& operator[](int index) throw (exception)
 		{
@@ -183,16 +169,9 @@ public:
 			f.write((char*)&locuri[i], sizeof(locuri[i]));
 		}
 
-
-
-		int lungimeSala = strlen(sala);
-		f.write((char*)&lungimeSala, sizeof(lungimeSala));
-		f.write((char*)&sala, lungimeSala);
-		
-
-		int lungimeNumeClient = strlen(numeClient);
+		int lungimeNumeClient = numeClient.length() + 1;
 		f.write((char*)&lungimeNumeClient, sizeof(lungimeNumeClient));
-		f.write((char*)&numeClient, lungimeNumeClient);
+		f.write(numeClient.c_str(), lungimeNumeClient);
 
 
 		f.write((char*)&pret, sizeof(pret));
@@ -224,26 +203,47 @@ public:
 			cout << "Locul: " << locuri[i] << endl;
 		}
 
+		size_t lungimeNumeClient = 0;
+		f.read((char*)&lungimeNumeClient, sizeof(lungimeNumeClient));
+		char* auxNume = new char[lungimeNumeClient];
+		f.read(auxNume, lungimeNumeClient);
+		numeClient = auxNume;
+		cout << "Numele clientului de pe bilet este: " << numeClient << endl;
 
 
 
-
-		cout << " " << endl;
 		f.close();
-
 
 
 	}
 
 
-
-
+	friend Bilet operator+(int, Bilet);
+	friend ostream& operator<<(ostream&, Bilet);
 	friend istream& operator>>(istream&, Bilet);
 
 };
 
 string Bilet::welcome = "Vizionare placuta";
 
+
+ostream& operator<<(ostream& iesire, Bilet s) {
+
+	iesire << "Numele filmului de pe bilet: " << s.numeFilm << endl;
+
+
+	if (s.locuri != nullptr && s.nrLocuri > 0) {
+		iesire << "Numarul de locuri rezervate pe acest bilet: " << s.nrLocuri << endl;
+		iesire << "Numarul locurilor rezervate: " << endl;
+		for (int i = 0; i < s.nrLocuri; i++) {
+			cout << "Locul: " << s.locuri[i] << endl;
+		}
+	}
+
+
+
+	return iesire;
+}
 istream& operator>>(istream& intrare, Bilet s) {
 	
 	cout << "Numele filmului: " << endl;
@@ -277,10 +277,7 @@ istream& operator>>(istream& intrare, Bilet s) {
 
 	cout << "Numele Clientului: " << endl;
 	intrare >> ws;
-	char buffer0[100];
-	intrare.getline(buffer0, 99);
-	s.numeClient = new char[strlen(buffer0) + 1];
-	strcpy_s(s.numeClient, strlen(buffer0) + 1, buffer0);
+	getline(intrare, s.numeClient);
 
 	cout << "Pret: " << endl;
 	intrare >> s.pret;

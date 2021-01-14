@@ -227,19 +227,6 @@ public:
 
 		cout << "Genul filmului stocat in fisier este " << gen << endl;
 
-		/*string buffer = "";
-		char c = 0;
-		while ((c = f.get()) != 0) {
-			buffer += c;
-		}
-		delete[] sala;
-		sala = new char[buffer.length() + 1];
-		strcpy_s(sala, buffer.length() + 1, buffer.c_str());
-
-		cout << "Sala filmului stocata in fisier este " << sala << endl;*/
-
-
-
 
 		f.read((char*)&nrDerulari, sizeof(nrDerulari));
 		delete[] ora;
@@ -271,8 +258,14 @@ public:
 
 	ostream& operator<<(ostream& iesire, Film s) {
 		iesire << "Numele filmului este " << s.nume << endl;
-		//iesire << "Sala este" << s.sala << endl;
-		if (s.ora != nullptr && s.nrDerulari != 0) {
+
+		
+		if (s.sala != nullptr) {
+			iesire << "Sala: " << s.sala << endl;
+		}
+
+
+		if (s.ora != nullptr && s.nrDerulari > 0) {
 			for (int i = 0; i < s.nrDerulari; i++) {
 				iesire << "Ora " << i+1 << "este " << s.ora[i] << endl;
 			}

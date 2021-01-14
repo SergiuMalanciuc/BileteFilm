@@ -26,18 +26,17 @@ int main()
 
 
 		int v[3] = { 1, 2, 3 };
-		char sds[] = { 'A', 'B', 'C' };
-		char dsds[] = "hello";
+		char sds[] = { 'A', 'B', 'C'};
+		char sala[] = "A2";
+		char numeCl[] = "Sergiu Malanciuc";
 		char* a = nullptr;
 		
-		Bilet s1(1, "Hobbit", v, 3, dsds, dsds, 50);
-		s1.scriereBilet();
-		s1.citireBilet();
+		/*Bilet s1(1, "Hobbit", v, 3, sala, numeCl, 50);
+		cout << s1;*/
+		
 
 		Film s2(1, "THD", sds, v, 3, "Horror", 50);
-		s2.scriereFilm();
-		s2.citireFilm();
-		
+		cout << s2;
 		
 
 	
