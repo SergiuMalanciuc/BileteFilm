@@ -1,0 +1,4 @@
+C:\Users\Sergiu\Desktop\Organizare\BileteFilm\Debug\BileteFilm.exe
+C:\Users\Sergiu\Desktop\Organizare\BileteFilm\Debug\BileteFilm.pdb
+C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\Debug\BileteFilm.exe
+C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\Debug\BileteFilm.pdb
