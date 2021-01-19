@@ -1,13 +1,17 @@
 ﻿  Bilet.cpp
 C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\Bilet.h(63,45): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\Film.h(58,45): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
   BileteFilm.cpp
-C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\Film.h(60,45): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
-C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\Optiuni.h(26,7): warning C4102: 'case1': unreferenced label
+C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\Film.h(58,45): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\Bilet.h(63,45): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\Client.h(56,44): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\BileteFilm.cpp(172,20): warning C4244: '=': conversion from 'std::streamoff' to 'long', possible loss of data
+C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\BileteFilm.cpp(297,20): warning C4244: '=': conversion from 'std::streamoff' to 'long', possible loss of data
   Client.cpp
 C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\Client.h(56,44): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
   Film.cpp
-C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\Film.h(60,45): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
-  Loc.cpp
+C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\Film.h(58,45): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+  Locuri.cpp
   Generating Code...
-C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\Client.cpp(253): warning C4715: 'Client::setLocDorit': not all control paths return a value
+C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\Client.cpp(259): warning C4715: 'Client::setLocDorit': not all control paths return a value
   BileteFilm.vcxproj -> C:\Users\Sergiu\Desktop\Proiect\BileteFilm\BileteFilm\Debug\BileteFilm.exe

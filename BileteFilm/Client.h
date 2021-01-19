@@ -4,17 +4,17 @@ using namespace std;
 
 class Client {
 private:
-	const int ID;
+	static int ID;
 	string nume;
 	string numeFilmDorit;
 	char* email;
 	int* locDorit;
 	int nrLocuriDorite;
-	static string tip;
+	const int uID;
 
 public:
 	Client();
-	Client(int ID, string nume, string numeFilmDorit, const char* email, int* locDorit, int nrLocuriDorite);
+	Client( string nume, string numeFilmDorit, const char* email, int* locDorit, int nrLocuriDorite);
 	Client(const Client& s);
 	~Client();
 	Client operator= (const Client& s) {
@@ -71,14 +71,16 @@ public:
 	int* setLocDorit(int* locDorit, int nrLocuri);
 	int* getLocDorit();
 	int getNrLocuri();
-
+	int returnUID();
+	void returnData();
+	int check(int s);
 	
 	void serializareClient(ofstream& f);
 	void deserializareClient(ifstream& f);
 
 
 	friend ostream& operator<<(ostream&, Client);
-	friend istream& operator>>(istream&, Client);
+	friend istream& operator>>(istream&, Client&);
 };
 
 

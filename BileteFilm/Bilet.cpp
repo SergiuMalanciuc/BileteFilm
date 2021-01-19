@@ -2,9 +2,11 @@
 #include <string>
 #include <fstream>
 #include "Bilet.h"
+#include "Film.h"
+#include <map>
 using namespace std;
 
-Bilet::Bilet() : ID(1)
+Bilet::Bilet() : uID(ID++)
 {
 	numeFilm = " ";
 	locuri = nullptr;
@@ -14,7 +16,7 @@ Bilet::Bilet() : ID(1)
 	pret = 0;
 }
 
-Bilet::Bilet(int ID, string numeFilm, int* locuri, int nrLocuri, const char* sala, string numeClient, int pret) : ID(ID)
+Bilet::Bilet(string numeFilm, int* locuri, int nrLocuri, const char* sala, string numeClient, int pret) : uID(ID++)
 {
 	this->numeFilm = numeFilm;
 
@@ -44,7 +46,7 @@ Bilet::Bilet(int ID, string numeFilm, int* locuri, int nrLocuri, const char* sal
 	this->pret = pret;
 }
 
-Bilet::Bilet(const Bilet& s) : ID(s.ID)
+Bilet::Bilet(const Bilet& s) : uID(s.ID++)
 {
 	numeFilm = s.numeFilm;
 
@@ -87,6 +89,8 @@ Bilet::~Bilet()
 
 void Bilet::serializareBilet(ofstream& f)
 {
+	f.write((char*)&uID, sizeof(uID));
+
 	int lungimeNume = numeFilm.length() + 1;
 	f.write((char*)&lungimeNume, sizeof(lungimeNume));
 	f.write(numeFilm.c_str(), lungimeNume);
@@ -112,12 +116,13 @@ void Bilet::serializareBilet(ofstream& f)
 
 void Bilet::deserializareBilet(ifstream& f)
 {
+	f.read((char*)&uID, sizeof(uID));
+
 	int lungimeNume = 0;
 	f.read((char*)&lungimeNume, sizeof(lungimeNume));
 	char* aux = new char[lungimeNume];
 	f.read(aux, lungimeNume);
 	numeFilm = aux;
-	cout << "Numele filmului de pe bilet este: " << numeFilm << endl;
 
 	f.read((char*)&nrLocuri, sizeof(nrLocuri));
 	delete[] locuri;
@@ -125,18 +130,12 @@ void Bilet::deserializareBilet(ifstream& f)
 	for (int i = 0; i < nrLocuri; i++) {
 		f.read((char*)&locuri[i], sizeof(locuri[i]));
 	}
-	cout << "Numarul de locuri rezervate pe acest bilet: " << nrLocuri << endl;
-	cout << "Numarul locurilor rezervate: " << endl;
-	for (int i = 0; i < nrLocuri; i++) {
-		cout << "Locul: " << locuri[i] << endl;
-	}
 
 	size_t lungimeNumeClient = 0;
 	f.read((char*)&lungimeNumeClient, sizeof(lungimeNumeClient));
 	char* auxNume = new char[lungimeNumeClient];
 	f.read(auxNume, lungimeNumeClient);
 	numeClient = auxNume;
-	cout << "Numele clientului de pe bilet este: " << numeClient << endl;
 
 	int lungimeSala = 0;
 	f.read((char*)&lungimeSala, sizeof(lungimeSala));
@@ -147,10 +146,8 @@ void Bilet::deserializareBilet(ifstream& f)
 	int n = salA.length() + 1;
 	sala = new char[n];
 	strcpy_s(sala, n, salA.c_str());
-	cout << "Sala de pe bilet este: " << sala << endl;
 
 	f.read((char*)&pret, sizeof(pret));
-	cout << "Pretul biletului este de: " << pret << endl;
 }
 
 string Bilet::setNumeFilm(string nume)
@@ -228,6 +225,29 @@ int Bilet::getPret()
 	return this->pret;
 }
 
+int Bilet::returnUID() {
+	return this->uID;
+}
+
+void Bilet::returnData() {
+	cout << "ID: " << uID << endl;
+	cout << "Numele clientului: " << numeClient << endl;
+	cout << "Filmul: " << numeFilm << endl;
+
+}
+
+int Bilet ::check(int s)
+{
+	if (s == uID) {
+		return 1;
+	}
+
+	else
+	{
+		return 0;
+	}
+}
+
 ostream& operator<<(ostream& iesire, Bilet s)
 {
 	iesire << "Numele filmului de pe bilet: " << s.numeFilm << endl;
@@ -249,7 +269,7 @@ ostream& operator<<(ostream& iesire, Bilet s)
 	return iesire;
 }
 
-istream& operator>>(istream& intrare, Bilet s)
+istream& operator>>(istream& intrare, Bilet& s)
 {
 	cout << "Numele filmului: " << endl;
 	intrare >> ws;
@@ -290,3 +310,4 @@ istream& operator>>(istream& intrare, Bilet s)
 	return intrare;
 }
 
+int Bilet::ID = 0;

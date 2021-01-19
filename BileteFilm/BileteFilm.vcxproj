@@ -143,14 +143,13 @@
     <ClCompile Include="BileteFilm.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Film.cpp" />
-    <ClCompile Include="Loc.cpp" />
+    <ClCompile Include="Locuri.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bilet.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Film.h" />
-    <ClInclude Include="Loc.h" />
-    <ClInclude Include="Optiuni.h" />
+    <ClInclude Include="Locuri.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

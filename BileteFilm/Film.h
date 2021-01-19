@@ -1,22 +1,20 @@
-#ifndef FILM_H
-#define FILM_H
 using namespace std;
 
 
 class Film {
 private:
-	const int id;
+	static int ID;
 	string nume;
 	char* sala;
 	int* ora;
 	int nrDerulari;
 	string gen;
-	static string cinematograf;
+	const int uID;
 	int pret;
 public:
 
 	Film();
-	Film(int id, string nume, const char* sala, int* ora, int nrDerulari, string gen, int pret);
+	Film(string nume, const char* sala, int* ora, int nrDerulari, string gen, int pret);
 	Film(const Film& s);
 	~Film();
 	
@@ -70,7 +68,10 @@ public:
 		}
 	}
 	void serializareFilm(ofstream &f);
-	void deserializareFilm(ifstream &f);
+	void deserializareFilm(ifstream& f);
+
+
+
 
 	string setNume(string Nume);
 	string getNume();
@@ -83,20 +84,19 @@ public:
 	string getGen();
 	int setPret(int Pret);
 	int getPret();
-
-
+	void returnData();
+	int returnUID();
+	int check(int s);
+	int returnNrNum();
+	void getDataforBilet();
 
 	friend ostream& operator<<(ostream&, Film);
-	friend istream& operator>>(istream&, Film);
+	friend istream& operator>>(istream&, Film&);
+	friend ifstream& operator>>(ifstream&, Film&); //citire din fisier
+	friend ofstream& operator<<(ofstream&, Film&); //scriere in fisier
 
 };
 
 
 
 
-
-
-
-
-
-#endif

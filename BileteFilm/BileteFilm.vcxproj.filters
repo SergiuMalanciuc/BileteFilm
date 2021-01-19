@@ -27,7 +27,7 @@
     <ClCompile Include="Bilet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Loc.cpp">
+    <ClCompile Include="Locuri.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,10 +41,7 @@
     <ClInclude Include="Bilet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Loc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Optiuni.h">
+    <ClInclude Include="Locuri.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

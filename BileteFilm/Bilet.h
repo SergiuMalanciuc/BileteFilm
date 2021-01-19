@@ -5,19 +5,19 @@ class Bilet {
 
 private:
 
-	const int ID;
+	static int ID;
 	string numeFilm;
 	int* locuri;
 	int nrLocuri;
 	char* sala;
 	string numeClient;
 	int pret;
-	static string welcome;
+	const int uID;
 
 public:
 
 	Bilet();
-	Bilet(int ID, string numeFilm, int* locuri, int nrLocuri, const char* sala, string numeClient, int pret);
+	Bilet(string numeFilm, int* locuri, int nrLocuri, const char* sala, string numeClient, int pret);
 	Bilet(const Bilet& s);
 	~Bilet();
 
@@ -87,11 +87,12 @@ public:
 	char* getSala();
 	int setPret(int pret);
 	int getPret();
-
-
+	int returnUID();
+	void returnData();
+	int check(int s);
 
 	friend ostream& operator<<(ostream&, Bilet);
-	friend istream& operator>>(istream&, Bilet);
+	friend istream& operator>>(istream&, Bilet&);
 
 };
 

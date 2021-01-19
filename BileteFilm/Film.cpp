@@ -4,7 +4,7 @@
 #include "Film.h"
 using namespace std;
 
-Film::Film() : id(1) {
+Film::Film() : uID(ID++) {
 	nume = " ";
 	sala = nullptr;
 	ora = nullptr;
@@ -13,7 +13,7 @@ Film::Film() : id(1) {
 	pret = 0;
 }
 
-Film::Film(int id, string nume, const char* sala, int* ora, int nrDerulari, string gen, int pret) : id(id) {
+Film::Film(string nume, const char* sala, int* ora, int nrDerulari, string gen, int pret) : uID(ID++) {
 	
 	this->nume = nume;
 
@@ -42,8 +42,9 @@ Film::Film(int id, string nume, const char* sala, int* ora, int nrDerulari, stri
 
 }
 
-Film::Film(const Film& s) : id(s.id) { 
+Film::Film(const Film& s) : uID(s.ID++) { 
 
+	
 	nume = s.nume;
 
 	if (s.sala != nullptr) {
@@ -81,8 +82,12 @@ Film::~Film() {
 	}
 }
 
+
+
 void Film::serializareFilm(ofstream &f)
 {
+	f.write((char*)&uID, sizeof(uID));
+
 	int lungimeNume = nume.length() + 1;
 	f.write((char*)&lungimeNume, sizeof(lungimeNume));
 	f.write(nume.c_str(), lungimeNume);
@@ -108,14 +113,17 @@ void Film::serializareFilm(ofstream &f)
 	//ora -> int*
 }
 
-void Film::deserializareFilm(ifstream &f)
+void Film::deserializareFilm(ifstream& f)
 {
+	f.read((char*)&uID, sizeof(uID));
+	//cout << "ID: " << uID << endl;
+
 	int lengthNume = 0;
 	f.read((char*)&lengthNume, sizeof(lengthNume));
 	char* aux = new char[lengthNume];
 	f.read(aux, lengthNume);
 	nume = aux;
-	cout << "Nume film: " << nume << endl;
+	//cout << "Nume film: " << nume << endl;
 
 	int lungimeSala = 0;
 	f.read((char*)&lungimeSala, sizeof(lungimeSala));
@@ -126,14 +134,14 @@ void Film::deserializareFilm(ifstream &f)
 	int n = sSala.length() + 1;
 	sala = new char[n];
 	strcpy_s(sala, n, sSala.c_str());
-	cout << "Sala: " << sala << endl;
+	//cout << "Sala: " << sala << endl;
 
 	int lengthGen = 0;
 	f.read((char*)&lengthGen, sizeof(lengthGen));
 	char* aux2 = new char[lengthGen];
 	f.read(aux2, lengthGen);
 	gen = aux2;
-	cout << "Genul: " << gen << endl;
+	//cout << "Genul: " << gen << endl;
 
 	f.read((char*)&nrDerulari, sizeof(nrDerulari));
 	delete[] ora;
@@ -141,12 +149,13 @@ void Film::deserializareFilm(ifstream &f)
 	for (int i = 0; i < nrDerulari; i++) {
 		f.read((char*)&ora[i], sizeof(ora[i]));
 	}
-	cout << "Numarul de redari zilnice: " << nrDerulari << endl;
+	//cout << "Numarul de redari zilnice: " << nrDerulari << endl;
+	/*cout << "Orele de redare: " << endl;
 	for (int i = 0; i < nrDerulari; i++) {
 		cout << i+1 << ". " << ora[i] << endl;
-	}
+	}*/
 
-
+	//cout << " " << endl;
 
 }
 
@@ -224,8 +233,58 @@ int Film::getPret()
 	return this->pret;
 }
 
+void Film::returnData()
+{
+	cout << "ID: " << uID << endl;
+	cout << "Numele: " << nume << endl;
+	cout << " " << endl;
+}
+
+int Film::returnUID()
+{
+	return uID;
+}
+
+int Film::check(int s)
+{
+	if (s == uID) {
+		return 1;
+	}
+		
+	else
+	{
+		return 0;
+	}
+}
+
+int Film::returnNrNum()
+{
+	if (nume.length() <= 15) {
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+void Film::getDataforBilet()
+{
+	cout << "ID: " << uID << endl;
+	cout << "Nume: " << nume << endl;
+	cout << "Sala: " << sala << endl;
+}
+
+
+
+
+
+
+
+
 
 ostream& operator<<(ostream& iesire, Film s) {
+
+	//iesire << "ID-ul este: " << s.uID << endl;
 	iesire << "Numele filmului este " << s.nume << endl;
 
 
@@ -234,21 +293,23 @@ ostream& operator<<(ostream& iesire, Film s) {
 	}
 
 
-	cout << "Numarul de redari zilnice: " << s.nrDerulari << endl;
+	iesire << "Numarul de redari zilnice: " << s.nrDerulari << endl;
 	cout << "Orele de difuzare: " << endl;
 	for (int i = 0; i < s.nrDerulari; i++) {
-		cout << i+1 << ". " << s.ora[i] << endl;
+		cout << "Ora "<< i+1 << ". " << s.ora[i] << endl;
 	}
 
 	iesire << "Genul filmului este: " << s.gen << endl;
 	iesire << "Pretul filmului este: " << s.pret << endl;
+	cout << " " << endl;
+	cout << " " << endl;
 
 	return iesire;
 }
 
-istream& operator>>(istream& intrare, Film s)
+istream& operator>>(istream& intrare, Film& s)
 {
-	cout << "Nume";
+	cout << "Nume: ";
 	intrare >> ws;
 	getline(intrare, s.nume);
 
@@ -267,7 +328,8 @@ istream& operator>>(istream& intrare, Film s)
 	if (s.nrDerulari > 0) {
 		s.ora = new int[s.nrDerulari];
 		for (int i = 0; i < s.nrDerulari; i++) {
-			cout << "Ora[" << i << "] =";
+			
+			cout << "Ora " << i + 1 << ": ";
 			intrare >> s.ora[i];
 		}
 
@@ -287,3 +349,59 @@ istream& operator>>(istream& intrare, Film s)
 	return intrare;
 }
 
+ifstream& operator>>(ifstream& citire, Film& s)
+{
+	if (citire.is_open()) {
+		citire >> s.ID;
+		
+		citire >> s.nume;
+
+		citire >> ws;
+		char buffer[100];
+		citire.getline(buffer, 99);
+		s.sala = new char[strlen(buffer) + 1];
+		strcpy_s(s.sala, strlen(buffer) + 1, buffer);
+
+		citire >> s.nrDerulari;
+		if (s.ora != nullptr) {
+			delete[] s.ora;
+		}
+		s.ora = new int[s.nrDerulari];
+		for (int i = 0; i < s.nrDerulari; i++) {
+			citire >> s.ora[i];
+		}
+
+
+
+
+	}
+
+	return citire;
+}
+
+ofstream& operator<<(ofstream& scriere, Film& s)
+{
+	if (scriere.is_open()) {
+
+		scriere << s.uID << endl;
+		scriere << s.nume << endl;
+		if (s.sala != nullptr) {
+			scriere << s.sala << endl;
+		}
+		scriere << s.nrDerulari << endl;
+		for (int i = 0; i < s.nrDerulari; i++) {
+			scriere << s.ora[i] << " ";
+		}
+		scriere << s.gen << endl;
+		scriere << s.pret << endl;
+	}
+
+	return scriere;
+
+
+}
+
+
+
+
+int Film::ID = 0;

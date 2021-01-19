@@ -4,7 +4,7 @@
 #include "Client.h"
 using namespace std;
 
-Client::Client() : ID(1)
+Client::Client() : uID(ID++)
 {
 	nume = "";
 	numeFilmDorit = "";
@@ -13,7 +13,7 @@ Client::Client() : ID(1)
 	nrLocuriDorite = 0;
 }
 
-Client::Client(int ID, string nume, string numeFilmDorit, const char* email, int* locDorit, int nrLocuriDorite) : ID(ID)
+Client::Client(string nume, string numeFilmDorit, const char* email, int* locDorit, int nrLocuriDorite) : uID(ID++)
 {
 	this->nume = nume;
 	this->numeFilmDorit = numeFilmDorit;
@@ -40,7 +40,7 @@ Client::Client(int ID, string nume, string numeFilmDorit, const char* email, int
 	}
 }
 
-Client::Client(const Client& s) : ID(s.ID)
+Client::Client(const Client& s) : uID(s.ID++)
 {
 	nume = s.nume;
 	numeFilmDorit = s.numeFilmDorit;
@@ -80,6 +80,8 @@ Client::~Client()
 
 void Client::serializareClient(ofstream& f)
 {
+	f.write((char*)&uID, sizeof(uID));
+
 	int lungimeNume = nume.length() + 1;
 	f.write((char*)&lungimeNume, sizeof(lungimeNume));
 	f.write(nume.c_str(), lungimeNume);
@@ -101,12 +103,14 @@ void Client::serializareClient(ofstream& f)
 
 void Client::deserializareClient(ifstream& f)
 {
+	f.read((char*)&uID, sizeof(uID));
+
 	int lungimeNume = 0;
 	f.read((char*)&lungimeNume, sizeof(lungimeNume));
 	char* auxNume = new char[lungimeNume];
 	f.read(auxNume, lungimeNume);
 	nume = auxNume;
-	cout << "Numele clientului este: " << nume << endl;
+	
 
 
 	int lungimeFilm = 0;
@@ -114,7 +118,7 @@ void Client::deserializareClient(ifstream& f)
 	char* auxFilm = new char[lungimeFilm];
 	f.read(auxFilm, lungimeFilm);
 	numeFilmDorit = auxFilm;
-	cout << "Numele filmului dorit: " << numeFilmDorit << endl;
+
 
 	int lungimeMail = 0;
 	f.read((char*)&lungimeMail, sizeof(lungimeMail));
@@ -125,7 +129,7 @@ void Client::deserializareClient(ifstream& f)
 	int n = mail.length() + 1;
 	email = new char[n];
 	strcpy_s(email, n, mail.c_str());
-	cout << "Email-ul clientului este: " << email << endl;
+	
 
 	f.read((char*)&nrLocuriDorite, sizeof(nrLocuriDorite));
 	delete[] locDorit;
@@ -133,14 +137,14 @@ void Client::deserializareClient(ifstream& f)
 	for (int i = 0; i < nrLocuriDorite; i++) {
 		f.read((char*)&locDorit[i], sizeof(locDorit[i]));
 	}
-	cout << "Numarul de locuri dorite: " << nrLocuriDorite << endl;
-	cout << "Locurile rezervate sunt: " << endl;
-	for (int i = 0; i < nrLocuriDorite; i++) {
-		cout << "Locul: " << locDorit[i] << endl;
-	}
+
+
+
 }
 
 ostream& operator<<(ostream& iesire, Client s) {
+
+	
 	iesire << "Numele clientului este: " << s.nume << endl;
 
 	iesire << "Numele filmului dorit: " << s.numeFilmDorit << endl;
@@ -159,7 +163,9 @@ ostream& operator<<(ostream& iesire, Client s) {
 	return iesire;
 }
 
-istream& operator>>(istream& intrare, Client s) {
+istream& operator>>(istream& intrare, Client& s) {
+
+
 
 	cout << "Nume client: ";
 	intrare >> ws;
@@ -184,7 +190,7 @@ istream& operator>>(istream& intrare, Client s) {
 	if (s.nrLocuriDorite > 0) {
 		s.locDorit = new int[s.nrLocuriDorite];
 		for (int i = 0; i < s.nrLocuriDorite; i++) {
-			cout << "Locul " << i + 1 << "este " << endl;
+			cout << "Locul " << i + 1 << " este " << endl;
 			intrare >> s.locDorit[i];
 		}
 	}
@@ -262,4 +268,26 @@ int Client::getNrLocuri()
 	return this->nrLocuriDorite;
 }
 
-string Client::tip = "Client fidel";
+int Client::returnUID()
+{
+	return uID;
+}
+
+void Client::returnData()
+{
+	cout << "ID: " << uID << endl;
+	cout << "Numele clientului este: " << nume << endl;
+}
+
+int Client::check(int s)
+{
+	if (s == uID) {
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+
+int Client::ID = 0;
